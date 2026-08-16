@@ -238,7 +238,8 @@ Replace `your-vercel-domain` with your actual Vercel project domain.
 - `backend/whatsapp/router.py` - WhatsApp API router
 - `backend/lead/router.py` - Lead qualification API router
 - `backend/multichannel/router.py` - Multi-channel API router
-- `requirements.txt` - Merged Python dependencies
+- `requirements.txt` - Merged Python runtime dependencies (bundled into the Vercel function)
+- `requirements-dev.txt` - Local-only extras (uvicorn, ollama provider, streamlit dashboard, pytest)
 - `.env.example` - Environment variables template
 - `vercel.json` - Vercel configuration
 - `SERVERLESS_LIMITATIONS.md` - Serverless compatibility documentation

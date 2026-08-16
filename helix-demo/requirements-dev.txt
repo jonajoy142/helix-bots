@@ -1,0 +1,17 @@
+# Local development / analytics extras.
+# NOT installed on Vercel: these push the serverless bundle past the 500 MB limit.
+-r requirements.txt
+
+# Local ASGI server
+uvicorn[standard]==0.30.6
+
+# Local LLM provider (LLM_PROVIDER=ollama)
+langchain-ollama==0.2.0
+
+# Analytics dashboard
+streamlit==1.38.0
+pandas==2.2.3
+plotly==5.24.1
+
+# Testing
+pytest==8.3.3
