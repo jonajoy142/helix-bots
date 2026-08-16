@@ -70,30 +70,16 @@ helix-demo/                          ← Vercel Root Directory
 - **Framework Preset**: Next.js
 - **Build Command**: `npm run build`
 - **Output Directory**: `.next`
-- **Install Command**: `pip install -r requirements.txt`
+- **Install Command**: default (`npm install`) — Python dependencies in `requirements.txt` are installed automatically by the Python runtime
 
 ### vercel.json Configuration
 ```json
 {
-  "version": 2,
-  "builds": [
+  "framework": "nextjs",
+  "rewrites": [
     {
-      "src": "package.json",
-      "use": "@vercel/next"
-    },
-    {
-      "src": "api/index.py",
-      "use": "@vercel/python"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/index.py"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
+      "source": "/api/:path*",
+      "destination": "/api/index.py"
     }
   ],
   "env": {
@@ -104,9 +90,7 @@ helix-demo/                          ← Vercel Root Directory
     "api/index.py": {
       "maxDuration": 60
     }
-  },
-  "installCommand": "pip install -r requirements.txt",
-  "framework": null
+  }
 }
 ```
 
