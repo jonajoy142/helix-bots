@@ -11,8 +11,12 @@
 1. **Install Python dependencies:**
 ```bash
 cd helix-demo
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 ```
+
+`requirements.txt` holds only the runtime dependencies that get bundled into the
+Vercel serverless function (500 MB limit). `requirements-dev.txt` includes those
+plus local-only extras (uvicorn, langchain-ollama, streamlit/pandas/plotly, pytest).
 
 2. **Install Node.js dependencies:**
 ```bash
@@ -124,6 +128,6 @@ The project is configured for Vercel deployment with:
 - Root Directory: `helix-demo`
 - Build Command: `npm run build`
 - Output Directory: `.next`
-- Install Command: `pip install -r requirements.txt`
+- Install Command: default (`npm install`); Python deps come from `requirements.txt` automatically
 
 See `vercel.json` for the complete configuration.
