@@ -1,38 +1,40 @@
 """
 RAG layer over the FAQ knowledge base.
 
-Uses an in-memory FAISS index built from OpenAI embeddings. FAISS in-memory
-is fine for a few hundred FAQs and rebuilding on boot; at scale you'd move to
-a managed vector DB (Pinecone / pgvector) and only re-embed changed rows.
+Keeps an in-memory numpy matrix of OpenAI embeddings and ranks by cosine
+similarity. That is plenty for a few hundred FAQs rebuilt on boot, and avoids
+pulling a vector-search library into the serverless bundle; at scale you'd move
+to a managed vector DB (Pinecone / pgvector) and only re-embed changed rows.
 """
-from langchain_community.vectorstores import FAISS
-from langchain.docstore.document import Document
+import numpy as np
+
 from backend.whatsapp.db import all_faqs
 from backend.whatsapp.llm_provider import get_embeddings
 
-_vectorstore = None
+_documents: list[str] = []
+_matrix: np.ndarray | None = None
 
 
 def build_index():
-    global _vectorstore
+    global _documents, _matrix
     faqs = all_faqs()
-    docs = [
-        Document(page_content=f"Q: {f['question']}\nA: {f['answer']}", metadata={"answer": f["answer"]})
-        for f in faqs
-    ]
-    if not docs:
-        _vectorstore = None
+    _documents = [f"Q: {f['question']}\nA: {f['answer']}" for f in faqs]
+    if not _documents:
+        _matrix = None
         return
-    embeddings = get_embeddings()
-    _vectorstore = FAISS.from_documents(docs, embeddings)
+    vectors = np.asarray(get_embeddings().embed_documents(_documents), dtype=np.float32)
+    norms = np.linalg.norm(vectors, axis=1, keepdims=True)
+    _matrix = vectors / np.maximum(norms, 1e-12)
 
 
 def search_faq(query: str, k: int = 2) -> str:
     """Returns the top-k matching FAQ answers concatenated, or '' if index is empty."""
-    global _vectorstore
-    if _vectorstore is None:
+    if _matrix is None:
         build_index()
-    if _vectorstore is None:
+    if _matrix is None:
         return ""
-    results = _vectorstore.similarity_search(query, k=k)
-    return "\n\n".join(r.page_content for r in results)
+    query_vector = np.asarray(get_embeddings().embed_query(query), dtype=np.float32)
+    query_vector /= max(float(np.linalg.norm(query_vector)), 1e-12)
+    scores = _matrix @ query_vector
+    top = np.argsort(scores)[::-1][:k]
+    return "\n\n".join(_documents[i] for i in top)
