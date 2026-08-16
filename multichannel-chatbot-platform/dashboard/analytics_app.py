@@ -6,7 +6,7 @@ Run:
 
 Shows exactly the kind of metrics a WhatsApp automation platform's customers
 care about: message volume by channel, escalation rate, and recent
-conversations — useful to demo alongside the bot itself in an interview.
+conversations.
 """
 import sqlite3
 import pandas as pd
@@ -18,7 +18,7 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from backend.config import settings
 
-st.set_page_config(page_title="UrbanChat-style Bot Analytics", layout="wide")
+st.set_page_config(page_title="Helix-style Bot Analytics", layout="wide")
 
 
 @st.cache_data(ttl=5)

@@ -1,9 +1,8 @@
 # Multi-Channel AI Chatbot Platform (LangGraph core + Web Widget + WhatsApp + Analytics)
 
-The systems-design piece of the portfolio: **one shared LangGraph agent**
-serves both an embeddable website chat widget and WhatsApp, with a live
-Streamlit analytics dashboard on top — the actual shape of a product like
-UrbanChat (many channels, one bot brain, one dashboard).
+One shared LangGraph agent serves both an embeddable website chat widget and
+WhatsApp, with a live Streamlit analytics dashboard on top — the actual shape
+of a product like Helix (many channels, one bot brain, one dashboard).
 
 ## Why this project
 
@@ -19,7 +18,7 @@ UrbanChat (many channels, one bot brain, one dashboard).
   launcher + chat panel, no framework, drop it into any site.
 - **Analytics dashboard** (`dashboard/analytics_app.py`) reading the same
   SQLite file: message volume by channel, escalation rate, recent
-  conversations — the kind of view a merchant using UrbanChat would actually
+  conversations — the kind of view a merchant using Helix would actually
   want to see.
 
 ## Architecture

@@ -3,7 +3,7 @@
 A conversational agent that chats with a prospect (WhatsApp / website widget),
 qualifies them using BANT (Budget, Authority, Need, Timeline), scores the
 lead, writes it to Google Sheets (or CSV), and fires a real-time automation
-webhook when a **hot** lead is found — the "lead automation" pitch UrbanChat
+webhook when a **hot** lead is found — the "lead automation" pitch Helix
 sells to merchants, built end to end.
 
 ## Why this project
