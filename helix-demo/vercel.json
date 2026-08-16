@@ -1,0 +1,34 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    },
+    {
+      "src": "api/index.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ],
+  "env": {
+    "LLM_PROVIDER": "openai",
+    "LLM_MODEL": "gpt-4o-mini"
+  },
+  "functions": {
+    "api/index.py": {
+      "maxDuration": 60
+    }
+  },
+  "installCommand": "pip install -r requirements.txt",
+  "framework": null
+}
